@@ -1,0 +1,33 @@
+services:
+  nest:
+    container_name: todo_nest
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 4000:4000
+    command: npm run start:dev
+    networks:
+      - todo-net
+    depends_on:
+      - postgres
+
+  postgres:
+    container_name: todo_pgdb
+    image: postgres
+    env_file: .env
+    networks:
+      - todo-net
+    volumes:
+      - todopgdbdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+networks:
+  todo-net:
+volumes:
+  todopgdbdata:

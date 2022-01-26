@@ -1,0 +1,9 @@
+{
+  "type": "postgres",
+  "host": "todo_pgdb",
+  "port": 5432,
+  "username": "postgres",
+  "password": "postgres",
+  "database": "todo",
+  "synchronize": true
+}
