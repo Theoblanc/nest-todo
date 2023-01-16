@@ -8,27 +8,27 @@ import {
   Delete,
 } from '@nestjs/common';
 import { TodoService } from './todo.service';
-import { CreateTodoDto } from './dto/create-todo.dto';
+import { CreateTodoDTO } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
-import { Todo } from './entities/todo.entity';
 import { UpdateResult } from 'typeorm';
+import { TodoEntity } from './entities/todo.entity';
 
 @Controller('todo')
 export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
   @Post()
-  create(@Body() createTodoDto: CreateTodoDto): Promise<Todo> {
+  create(@Body() createTodoDto: CreateTodoDTO): Promise<TodoEntity> {
     return this.todoService.create(createTodoDto);
   }
 
   @Get()
-  findAll(): Promise<Todo[]> {
+  findAll(): Promise<TodoEntity[]> {
     return this.todoService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Todo> {
+  findOne(@Param('id') id: string): Promise<TodoEntity> {
     return this.todoService.findOne(id);
   }
 

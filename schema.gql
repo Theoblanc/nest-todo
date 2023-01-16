@@ -1,0 +1,13 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Todo {
+  id: String!
+  title: String!
+  completed: Boolean!
+}
+
+type Query {
+  todo: Todo!
+}

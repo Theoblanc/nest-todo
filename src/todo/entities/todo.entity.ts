@@ -1,11 +1,11 @@
-import { BaseModel } from 'src/shared/base.model';
+import { BaseModel } from 'src/commons/model/base.model';
 import { Column, Entity } from 'typeorm';
 
 @Entity('todo')
-export class Todo extends BaseModel {
+export class TodoEntity extends BaseModel {
   @Column()
-  content: string;
+  title: string;
 
   @Column({ default: false })
-  checked: boolean;
+  completed: boolean;
 }

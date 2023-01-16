@@ -37,7 +37,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(4000, '0.0.0.0', () => {
-    console.log('yeeeey');
+    console.log('server is running....😁');
   });
 }
 bootstrap();

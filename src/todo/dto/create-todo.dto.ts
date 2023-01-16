@@ -1,9 +1,8 @@
+import { Field } from '@nestjs/graphql';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateTodoDto {
+export class CreateTodoDTO {
   @ApiProperty()
-  content: string;
-
-  @ApiProperty()
-  checked: boolean;
+  @Field({ nullable: true })
+  title: string;
 }
