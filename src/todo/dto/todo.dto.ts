@@ -5,10 +5,10 @@ export class TodoItemDTO {
   @Field(() => ID)
   id!: number;
 
-  @FilterableField()
+  @Field()
   title!: string;
 
-  @FilterableField()
+  @Field()
   completed!: boolean;
 
   @Field(() => GraphQLISODateTime)
@@ -17,3 +17,5 @@ export class TodoItemDTO {
   @Field(() => GraphQLISODateTime)
   updated!: Date;
 }
+
+export class TodoItemConnection {}

@@ -1,31 +1,37 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { CreateTodoDTO } from './dto/create-todo.dto';
-import { UpdateTodoDto } from './dto/update-todo.dto';
+import { DeepPartial, Repository, UpdateResult } from 'typeorm';
+import { TodoItemDTO } from './dto/todo.dto';
 import { TodoEntity } from './entities/todo.entity';
+import { TodoItemInputDTO } from './input/todo.input';
 
+interface TodoQueryService {
+  createOne(dto: TodoItemInputDTO): Promise<TodoEntity>;
+  findAll(): Promise<TodoEntity[]>;
+  findOne(id: string): Promise<TodoEntity>;
+  updateOne(id: string, item: DeepPartial<TodoItemDTO>): Promise<UpdateResult>;
+}
 @Injectable()
-export class TodoService {
+export class TodoService implements TodoQueryService {
   constructor(
     @InjectRepository(TodoEntity)
     private readonly todoRepository: Repository<TodoEntity>,
   ) {}
 
-  create(createTodoDto: CreateTodoDTO) {
-    return this.todoRepository.save(createTodoDto);
+  async createOne(createTodoDTO: TodoItemInputDTO): Promise<TodoEntity> {
+    return this.todoRepository.save(createTodoDTO);
   }
 
-  findAll() {
+  findAll(): Promise<TodoEntity[]> {
     return this.todoRepository.find();
   }
 
-  findOne(id: string) {
+  findOne(id: string): Promise<TodoEntity> {
     return this.todoRepository.findOne(id);
   }
 
-  update(id: string, updateTodoDto: UpdateTodoDto) {
-    return this.todoRepository.update(id, updateTodoDto);
+  updateOne(id: string, item: DeepPartial<TodoItemDTO>): Promise<UpdateResult> {
+    return this.todoRepository.update(id, item);
   }
 
   remove(id: string) {

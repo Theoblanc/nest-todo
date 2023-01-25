@@ -8,18 +8,18 @@ import {
   Delete,
 } from '@nestjs/common';
 import { TodoService } from './todo.service';
-import { CreateTodoDTO } from './dto/create-todo.dto';
-import { UpdateTodoDto } from './dto/update-todo.dto';
-import { UpdateResult } from 'typeorm';
 import { TodoEntity } from './entities/todo.entity';
+import { UpdateTodoDto } from './dto/update-todo.dto';
+import { CreateTodoDTO } from './dto/create-todo.dto';
+import { TodoItemDTO } from './dto/todo.dto';
 
 @Controller('todo')
 export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
   @Post()
-  create(@Body() createTodoDto: CreateTodoDTO): Promise<TodoEntity> {
-    return this.todoService.create(createTodoDto);
+  async create(@Body() createTodoDto: CreateTodoDTO): Promise<TodoItemDTO> {
+    return this.covertToDTO(await this.todoService.createOne(createTodoDto));
   }
 
   @Get()
@@ -27,21 +27,29 @@ export class TodoController {
     return this.todoService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string): Promise<TodoEntity> {
-    return this.todoService.findOne(id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string): Promise<TodoItemDTO> {
+  //   return this.todoService.findOne(id);
+  // }
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateTodoDto: UpdateTodoDto,
-  ): Promise<UpdateResult> {
-    return this.todoService.update(id, updateTodoDto);
-  }
+  // @Patch(':id')
+  // update(
+  //   @Param('id') id: string,
+  //   @Body() updateTodoDto: UpdateTodoDto,
+  // ): Promise<UpdateResult> {
+  //   return this.todoService.update(id, updateTodoDto);
+  // }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.todoService.remove(id);
+  }
+
+  covertToDTO(entity: TodoEntity): TodoItemDTO {
+    const todo = new TodoItemDTO();
+    todo.id = entity.id;
+    todo.title = entity.title;
+    todo.completed = entity.completed;
+    return todo;
   }
 }
