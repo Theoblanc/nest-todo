@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateTodoDTO } from './dto/create-todo.dto';
 import { TodoEntity } from './entities/todo.entity';
+import { TodoItemInputDTO } from './input/todo.input';
 import { TodoController } from './todo.controller';
 import { TodoService } from './todo.service';
 
 describe('TodoService', () => {
-  let service: TodoService;
-  let repository: Repository<TodoEntity>;
+  let todoService: TodoService;
+  let todoRepository: Repository<TodoEntity>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -28,19 +28,48 @@ describe('TodoService', () => {
       ],
     }).compile();
 
-    service = module.get<TodoService>(TodoService);
-    repository = module.get<Repository<TodoEntity>>(
+    todoService = module.get<TodoService>(TodoService);
+    todoRepository = module.get<Repository<TodoEntity>>(
       getRepositoryToken(TodoEntity),
     );
   });
 
-  describe('create()', () => {
-    it('should create a new TodoEntity', async () => {
-      const createTodoDto = new CreateTodoDTO();
-      const todo = await service.create(createTodoDto);
+  describe('createOne', () => {
+    it('should create a todo item', async () => {
+      const todoInput: TodoItemInputDTO = {
+        title: 'Test todo',
+        completed: false,
+      };
+      const todoEntity = new TodoEntity();
+      todoEntity.title = todoInput.title;
+      todoEntity.completed = todoInput.completed;
 
-      expect(todo).toBeInstanceOf(TodoEntity);
-      expect(repository.save).toHaveBeenCalledWith(createTodoDto);
+      jest.spyOn(todoRepository, 'save').mockResolvedValue(todoEntity);
+
+      expect(await todoService.createOne(todoInput)).toEqual(todoEntity);
+    });
+  });
+
+  describe('findOne', () => {
+    it('should return a todo item', async () => {
+      const todoEntity = new TodoEntity();
+
+      jest.spyOn(todoRepository, 'findOne').mockResolvedValue(todoEntity);
+
+      expect(await todoService.findOne('1')).toEqual(todoEntity);
+    });
+  });
+
+  describe('findAll', () => {
+    it('should return all todo item', async () => {
+      const todoEntities = [
+        new TodoEntity(),
+        new TodoEntity(),
+        new TodoEntity(),
+      ];
+
+      jest.spyOn(todoRepository, 'find').mockResolvedValue(todoEntities);
+      expect(await todoService.findAll()).toEqual(todoEntities);
     });
   });
 });

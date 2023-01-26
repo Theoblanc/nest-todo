@@ -5,8 +5,8 @@ import { TodoItemDTO } from './dto/todo.dto';
 import { TodoEntity } from './entities/todo.entity';
 import { TodoItemInputDTO } from './input/todo.input';
 
-interface TodoQueryService {
-  createOne(dto: TodoItemInputDTO): Promise<TodoEntity>;
+export interface TodoQueryService {
+  createOne(todoInput: TodoItemInputDTO): Promise<TodoEntity>;
   findAll(): Promise<TodoEntity[]>;
   findOne(id: string): Promise<TodoEntity>;
   updateOne(id: string, item: DeepPartial<TodoItemDTO>): Promise<UpdateResult>;
@@ -18,8 +18,8 @@ export class TodoService implements TodoQueryService {
     private readonly todoRepository: Repository<TodoEntity>,
   ) {}
 
-  async createOne(createTodoDTO: TodoItemInputDTO): Promise<TodoEntity> {
-    return this.todoRepository.save(createTodoDTO);
+  async createOne(todoInput: TodoItemInputDTO): Promise<TodoEntity> {
+    return this.todoRepository.save(todoInput);
   }
 
   findAll(): Promise<TodoEntity[]> {
