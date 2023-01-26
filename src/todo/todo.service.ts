@@ -11,6 +11,7 @@ export interface TodoQueryService {
   findOne(id: string): Promise<TodoEntity>;
   updateOne(id: string, item: DeepPartial<TodoItemDTO>): Promise<UpdateResult>;
 }
+
 @Injectable()
 export class TodoService implements TodoQueryService {
   constructor(

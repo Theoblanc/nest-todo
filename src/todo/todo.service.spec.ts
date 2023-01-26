@@ -17,13 +17,7 @@ describe('TodoService', () => {
         TodoService,
         {
           provide: getRepositoryToken(TodoEntity),
-          useValue: {
-            save: jest.fn().mockResolvedValue(new TodoEntity()),
-            find: jest.fn().mockResolvedValue([]),
-            findOne: jest.fn().mockResolvedValue(null),
-            update: jest.fn().mockResolvedValue({ affected: 0 }),
-            delete: jest.fn().mockResolvedValue({ affected: 0 }),
-          },
+          useClass: Repository,
         },
       ],
     }).compile();

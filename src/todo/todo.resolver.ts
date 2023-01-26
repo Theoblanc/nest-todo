@@ -2,12 +2,12 @@ import { Inject } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { TodoItemDTO } from './dto/todo.dto';
 import { TodoItemInputDTO } from './input/todo.input';
-import { TodoQueryService } from './todo.service';
+import { TodoQueryService, TodoService } from './todo.service';
 
 @Resolver(() => TodoItemDTO)
 export class TodoResolver {
   constructor(
-    @Inject('TodoQueryService')
+    @Inject(TodoService)
     private todoService: TodoQueryService,
   ) {}
 
